@@ -1,4 +1,4 @@
-package network
+package ggg_network
 
 import (
 	"fmt"

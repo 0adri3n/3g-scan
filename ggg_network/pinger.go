@@ -1,4 +1,4 @@
-package network
+package ggg_network
 
 import (
     "fmt"
@@ -6,7 +6,7 @@ import (
     "github.com/go-ping/ping"
 )
 
-func Pinger(ip string) {
+func Pinger(ip string) bool {
     pinger, err := ping.NewPinger(ip)
     if err != nil {
         panic(err)
@@ -18,7 +18,8 @@ func Pinger(ip string) {
 
     err = pinger.Run()
     if err != nil {
-        panic(err)
+        fmt.Printf("%v not responding. Skipping...", ip)
+        return false
     }
 
     stats := pinger.Statistics()
@@ -27,5 +28,7 @@ func Pinger(ip string) {
     fmt.Println("Packets sent:", stats.PacketsSent)
     fmt.Println("Packets received:", stats.PacketsRecv)
     fmt.Println("Avg RTT:", stats.AvgRtt)
+
+    return true
 
 }

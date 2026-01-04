@@ -2,52 +2,64 @@ package main
 
 import (
     "fmt"
+	"flag"
 	"runtime"
-	"github.com/0adri3n/3g-scan/network"
-	"github.com/rivo/tview"
 	"strings"
-
+	"github.com/0adri3n/3g-scan/ggg_network"
 )
 
 func main() {
 
 
-	app := tview.NewApplication()
-	form := tview.NewForm().
-		AddTextArea("IP addresses", "", 40, 0, 0, nil).
-		AddTextView("Notes", "Please enter one IP per line !", 40, 2, true, false).
-		AddButton("Save", func() {
-			app.Stop()
-		})
-	form.SetBorder(true).SetTitle("3g-scan").SetTitleAlign(tview.AlignLeft)
-	if err := app.SetRoot(form, true).EnableMouse(true).EnablePaste(true).Run(); err != nil {
-		panic(err)
+	rangesPtr := flag.String("ranges", "", "IP ranges to scan (comma separated)")
+	ifacePtr := flag.String("iface", "", "Network interface to use (e.g. eth0 or Ethernet)")
+
+	flag.Parse()
+
+	ranges := *rangesPtr
+	ip_ranges := strings.Split(ranges, ",")
+	iface := *ifacePtr
+
+	fmt.Println("3g-scan config\n-----------------------------")
+	fmt.Println("* IP ranges :")
+	for _, ip_range := range ip_ranges {
+		fmt.Printf("- %v\n", ip_range)
 	}
-	ipsStr := form.GetFormItem(0).(*tview.TextArea).GetText()
-	ips := strings.Split(ipsStr, "\n")
+	fmt.Printf("\n* Interface :\n- %v", iface)
 
-	fmt.Printf("%v\n", ips)
-
+	fmt.Println("\n-----------------------------")
 	fmt.Println("3g-scan started")
+	fmt.Println("-----------------------------")
 
-	fmt.Println("Please select an interface : ")
-	interfaceName := network.SelectInterface()
 
-    fmt.Println("Let's scan ip adresses !")
+	mapped_ranges := make(map[string][]string)
 
-	for _, ip := range ips {
-		
-		fmt.Printf("\nScanning %v\n-----------------------------\n", ip)
+	for _, ip_range := range ip_ranges {
+		listed_ips := ggg_network.CidrLister(ip_range)
+		mapped_ranges[ip_range] = listed_ips
+	}
 
-		network.Pinger(ip)
+	for _, ip_range := range ip_ranges {
+		ips := mapped_ranges[ip_range]
 
-		switch runtime.GOOS {
-		case "windows":
-			network.WindowsMaccer(ip)
-		case "linux", "darwin":
-			network.LinuxMaccer(ip, interfaceName)
+		for _, ip := range ips {
+			
+			fmt.Printf("\nScanning %v\n-----------------------------\n", ip)
+
+			up := ggg_network.Pinger(ip)
+
+			if up {
+				switch runtime.GOOS {
+				case "windows":
+					ggg_network.WindowsMaccer(ip)
+				case "linux", "darwin":
+					ggg_network.LinuxMaccer(ip, iface)
+				}
+			}
+
+			fmt.Println("\n-----------------------------")
+
 		}
-		fmt.Println("-----------------------------")
 
 	}
 
