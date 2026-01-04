@@ -159,7 +159,6 @@ Logs are printed to `stderr` and include:
 
 ## 🛣️ Roadmap
 
-* [ ] TUI interface (tview)
 * [ ] Vendor lookup (OUI)
 * [ ] JSON / CSV output
 * [ ] Parallel scanning
