@@ -22,7 +22,8 @@ func Pinger(ip string) {
     }
 
     stats := pinger.Statistics()
-    fmt.Println("IP:", stats.Addr)
+
+    fmt.Println("Informations from Pinger")
     fmt.Println("Packets sent:", stats.PacketsSent)
     fmt.Println("Packets received:", stats.PacketsRecv)
     fmt.Println("Avg RTT:", stats.AvgRtt)

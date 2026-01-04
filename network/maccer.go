@@ -52,6 +52,8 @@ func WindowsMaccer(ip string) {
 	re := regexp.MustCompile(`(\d+\.\d+\.\d+\.\d+)\s+([a-fA-F0-9\-]{17})`)
 	matches := re.FindAllStringSubmatch(string(out), -1)
 
+	fmt.Println("Informations from Maccer")
+
 	for _, m := range matches {
 		if m[1] == ip {
 			fmt.Printf("MAC Adress : %v", m[2])
