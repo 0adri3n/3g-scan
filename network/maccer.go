@@ -4,14 +4,18 @@ import (
 	"fmt"
 	"net"
 	"net/netip"
+	"os/exec"
+	"regexp"
 
 	"github.com/mdlayher/arp"
 )
 
-func Maccer(ipStr string) {
-	iface, err := net.InterfaceByName("eth0")
+func LinuxMaccer(ipStr string, interfaceName string) {
+
+
+	iface, err := net.InterfaceByName(interfaceName)
 	if err != nil {
-		fmt.Println("Interface introuvable:", err)
+		fmt.Println("Interface not found:", err)
 		return
 	}
 
@@ -24,15 +28,37 @@ func Maccer(ipStr string) {
 
 	ip, err := netip.ParseAddr(ipStr)
 	if err != nil {
-		fmt.Println("IP invalide:", err)
+		fmt.Println("Invalid IP:", err)
 		return
 	}
 
 	hw, err := c.Resolve(ip)
 	if err != nil {
-		fmt.Println("Non résolu")
+		fmt.Println("Not resolved")
 		return
 	}
 
 	fmt.Println("MAC:", hw)
+}
+
+func WindowsMaccer(ip string) {
+	cmd := exec.Command("arp", "-a")
+	out, err := cmd.Output()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	re := regexp.MustCompile(`(\d+\.\d+\.\d+\.\d+)\s+([a-fA-F0-9\-]{17})`)
+	matches := re.FindAllStringSubmatch(string(out), -1)
+
+	for _, m := range matches {
+		if m[1] == ip {
+			fmt.Printf("MAC Adress : %v", m[2])
+			return
+		}
+	}
+
+	fmt.Println("MAC not found")
+
 }
