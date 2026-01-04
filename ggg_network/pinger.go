@@ -1,7 +1,7 @@
 package ggg_network
 
 import (
-    "fmt"
+    "log"
     "time"
     "github.com/go-ping/ping"
 )
@@ -14,20 +14,19 @@ func Pinger(ip string) bool {
 
     pinger.Count = 3
     pinger.Timeout = time.Second * 3
-    pinger.SetPrivileged(true) // requis pour ICMP natif
+    pinger.SetPrivileged(true)
 
     err = pinger.Run()
     if err != nil {
-        fmt.Printf("%v not responding. Skipping...", ip)
+        log.Printf("%v not responding. Skipping...", ip)
         return false
     }
 
     stats := pinger.Statistics()
 
-    fmt.Println("Informations from Pinger")
-    fmt.Println("Packets sent:", stats.PacketsSent)
-    fmt.Println("Packets received:", stats.PacketsRecv)
-    fmt.Println("Avg RTT:", stats.AvgRtt)
+    log.Println("Packets sent:", stats.PacketsSent)
+    log.Println("Packets received:", stats.PacketsRecv)
+    log.Println("Avg RTT:", stats.AvgRtt)
 
     return true
 

@@ -2,6 +2,9 @@ package main
 
 import (
     "fmt"
+	"log"
+	"io"
+	"os"
 	"flag"
 	"runtime"
 	"strings"
@@ -10,11 +13,22 @@ import (
 
 func main() {
 
+	log.SetPrefix("3g-scan : ")
 
 	rangesPtr := flag.String("ranges", "", "IP ranges to scan (comma separated)")
 	ifacePtr := flag.String("iface", "", "Network interface to use (e.g. eth0 or Ethernet)")
+	debugPtr := flag.Bool("debug", false, "Debug ability (true/false)")
 
 	flag.Parse()
+
+	debug := *debugPtr
+	if debug {
+		log.SetOutput(os.Stderr)
+		log.SetFlags(log.LstdFlags)
+	} else {
+		log.SetOutput(io.Discard)
+		log.SetFlags(0)
+	}
 
 	ranges := *rangesPtr
 	ip_ranges := strings.Split(ranges, ",")
@@ -25,7 +39,9 @@ func main() {
 	for _, ip_range := range ip_ranges {
 		fmt.Printf("- %v\n", ip_range)
 	}
-	fmt.Printf("\n* Interface :\n- %v", iface)
+	fmt.Printf("\n* Interface :\n- %v\n", iface)
+	fmt.Printf("\n* Debug :\n- %v", debug)
+
 
 	fmt.Println("\n-----------------------------")
 	fmt.Println("3g-scan started")
@@ -44,7 +60,7 @@ func main() {
 
 		for _, ip := range ips {
 			
-			fmt.Printf("\nScanning %v\n-----------------------------\n", ip)
+			log.Printf("\n\nScanning %v\n-----------------------------\n", ip)
 
 			up := ggg_network.Pinger(ip)
 
@@ -57,7 +73,6 @@ func main() {
 				}
 			}
 
-			fmt.Println("\n-----------------------------")
 
 		}
 
