@@ -45,8 +45,8 @@ func main() {
 		fmt.Printf("- %v\n", ip_range)
 	}
 	fmt.Printf("\n* Interface :\n- %v\n", iface)
-	fmt.Printf("\n* Port scanning :\n- %v", debug)
-	fmt.Printf("\n* Debug :\n- %v", debug)
+	fmt.Printf("\n* Port scanning :\n- %v\n", debug)
+	fmt.Printf("\n* Debug :\n- %v\n", debug)
 
 
 	fmt.Println("\n-----------------------------")

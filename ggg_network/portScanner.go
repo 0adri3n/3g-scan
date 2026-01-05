@@ -5,7 +5,30 @@ import (
 	"net"
 	"time"
 	"fmt"
+	"strconv"
+	"net/http"
 )
+
+func contains(slice []int, element int) bool {
+    for _, v := range slice {
+        if v == element {
+            return true
+        }
+    }
+    return false
+}
+
+func HTTPFingerprint(ip string, port int) {
+	client := http.Client{Timeout: 1 * time.Second}
+	resp, err := client.Get("http://" + ip + ":" + strconv.Itoa(port))
+	if err != nil {
+		return
+	}
+	defer resp.Body.Close()
+
+	log.Println("Server:", resp.Header.Get("Server"))
+}
+
 
 func PortScanner(ip string) {
 	
@@ -54,16 +77,30 @@ func PortScanner(ip string) {
         9200,  // Elasticsearch
     }
 
+	var webPorts = []int {
+		// Web
+        80,    // HTTP
+        443,   // HTTPS
+        8080,  // HTTP alt
+        8443,  // HTTPS alt
+        8000,  // HTTP alt
+        8888,  // HTTP alt
+        9000,  // HTTP alt
+	}
+
 	for _, port := range commonPorts {
 
 		conn, err := net.DialTimeout(
 			"tcp",
 			fmt.Sprintf("%s:%d", ip, port),
-			500*time.Millisecond,
+			250*time.Millisecond,
 		)
 		if err == nil {
 			log.Printf("Port %d: open\n", port)
 			conn.Close()
+			if contains(webPorts, port) {
+				HTTPFingerprint(ip, port)
+			}
 		}
 
 	}
