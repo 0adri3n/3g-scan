@@ -16,6 +16,7 @@ func main() {
 
 	rangesPtr := flag.String("ranges", "", "IP ranges to scan (comma separated)")
 	ifacePtr := flag.String("iface", "", "Network interface to use (e.g. eth0 or Ethernet)")
+	pScanPtr := flag.Bool("p_scan", true, "Port scanning functionality (true/false)")
 	debugPtr := flag.Bool("debug", false, "Debug ability (true/false)")
 
 	flag.Parse()
@@ -36,6 +37,7 @@ func main() {
 	}
 	ip_ranges := strings.Split(ranges, ",")
 	iface := *ifacePtr
+	pScan := *pScanPtr
 
 	fmt.Println("3g-scan config\n-----------------------------")
 	fmt.Println("* IP ranges :")
@@ -70,11 +72,19 @@ func main() {
 			if up {
 				ggg_network.HostnameDiscover(ip)
 				ggg_network.Maccer(ip)
+				if pScan {
+					ggg_network.PortScanner(ip)
+				}
 			}
 
 		}
 
 	}
+
+
+	fmt.Println("\n-----------------------------")
+	fmt.Println("3g-scan done.")
+	fmt.Println("-----------------------------")
 
 	var exit string
 	fmt.Println("\n\nPress any key then enter to exit...")
