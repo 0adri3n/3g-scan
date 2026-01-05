@@ -6,7 +6,6 @@ import (
 	"io"
 	"os"
 	"flag"
-	"runtime"
 	"strings"
 	"github.com/0adri3n/3g-scan/ggg_network"
 )
@@ -67,16 +66,11 @@ func main() {
 			log.Printf("\n\nScanning %v\n-----------------------------\n", ip)
 
 			up := ggg_network.Pinger(ip)
-
+		
 			if up {
-				switch runtime.GOOS {
-				case "windows":
-					ggg_network.WindowsMaccer(ip)
-				case "linux", "darwin":
-					ggg_network.LinuxMaccer(ip)
-				}
+				ggg_network.HostnameDiscover(ip)
+				ggg_network.Maccer(ip)
 			}
-
 
 		}
 
