@@ -163,7 +163,9 @@ Logs are printed to `stderr` and include:
 * [ ] JSON / CSV output
 * [ ] Parallel scanning
 * [X] Hostname resolution
-* [ ] Service checking
+* [X] Service checking
+* [ ] OS Guess
+* [ ] SNMP check
 * [ ] Export scan results
 
 ---
