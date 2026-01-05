@@ -7,6 +7,7 @@ import (
 	"os"
 	"flag"
 	"strings"
+	"sync"
 	"github.com/0adri3n/3g-scan/ggg_network"
 )
 
@@ -78,6 +79,8 @@ func main() {
 		mapped_ranges[ip_range] = listed_ips
 	}
 
+	var wg sync.WaitGroup
+
 	for _, ip_range := range ip_ranges {
 		ips := mapped_ranges[ip_range]
 
@@ -86,7 +89,11 @@ func main() {
 			log.Printf("\n\nScanning %v\n-----------------------------\n", ip)
 
 			if routine {
-				go RoutineMaster(ip, pScan)
+				wg.Add(1)
+				go func(ip string) {
+					defer wg.Done()
+					RoutineMaster(ip, pScan)
+				}(ip)
 			} else {
 				RoutineMaster(ip, pScan)
 			}
@@ -95,6 +102,7 @@ func main() {
 
 	}
 
+	wg.Wait()
 
 	fmt.Println("\n-----------------------------")
 	fmt.Println("3g-scan done.")
