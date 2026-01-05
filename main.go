@@ -35,6 +35,10 @@ func main() {
 	flag.Parse()
 
 	debug := *debugPtr
+	routine := *routinePtr
+	if routine {
+		debug = false
+	}
 	if debug {
 		log.SetOutput(os.Stderr)
 		log.SetFlags(log.LstdFlags)
@@ -50,10 +54,7 @@ func main() {
 	}
 	ip_ranges := strings.Split(ranges, ",")
 	pScan := *pScanPtr
-	routine := *routinePtr
-	if routine {
-		debug = false
-	}
+
 
 	fmt.Println("3g-scan config\n-----------------------------")
 	fmt.Println("* IP ranges :")
@@ -61,6 +62,7 @@ func main() {
 		fmt.Printf("- %v\n", ip_range)
 	}
 	fmt.Printf("\n* Port scanning :\n- %v\n", debug)
+	fmt.Printf("\n* Routine :\n- %v\n", routine)
 	fmt.Printf("\n* Debug :\n- %v\n", debug)
 
 
