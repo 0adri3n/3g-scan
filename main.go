@@ -47,6 +47,8 @@ func main() {
 	fmt.Println("3g-scan started")
 	fmt.Println("-----------------------------")
 
+	// ggg_network.SelectInterface()
+
 
 	mapped_ranges := make(map[string][]string)
 
@@ -69,7 +71,7 @@ func main() {
 				case "windows":
 					ggg_network.WindowsMaccer(ip)
 				case "linux", "darwin":
-					ggg_network.LinuxMaccer(ip, iface)
+					ggg_network.LinuxMaccer(ip)
 				}
 			}
 
