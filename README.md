@@ -159,10 +159,11 @@ Logs are printed to `stderr` and include:
 
 ## 🛣️ Roadmap
 
-* [ ] Vendor lookup (OUI)
+* [X] Vendor lookup (OUI)
 * [ ] JSON / CSV output
 * [ ] Parallel scanning
-* [ ] Hostname resolution
+* [X] Hostname resolution
+* [ ] Service checking
 * [ ] Export scan results
 
 ---
