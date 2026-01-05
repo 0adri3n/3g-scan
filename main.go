@@ -10,13 +10,27 @@ import (
 	"github.com/0adri3n/3g-scan/ggg_network"
 )
 
+func RoutineMaster(ip string, pScan bool) {
+
+	up := ggg_network.Pinger(ip)
+
+	if up {
+		ggg_network.HostnameDiscover(ip)
+		ggg_network.Maccer(ip)
+		if pScan {
+			ggg_network.PortScanner(ip)
+		}
+	}
+}
+
 func main() {
 
 	log.SetPrefix("3g-scan : ")
 
 	rangesPtr := flag.String("ranges", "", "IP ranges to scan (comma separated)")
-	pScanPtr := flag.Bool("p_scan", true, "Port scanning functionality (true/false)")
-	debugPtr := flag.Bool("debug", false, "Debug ability (true/false)")
+	pScanPtr := flag.Bool("p_scan", true, "Port scanning functionality (true/false default true)")
+	routinePtr := flag.Bool("routine", true, "Define routines a.k.a threads (true/false default true). If routine is enable, debug will automatically become false.")
+	debugPtr := flag.Bool("debug", false, "Debug ability (true/false default false)")
 
 	flag.Parse()
 
@@ -36,6 +50,10 @@ func main() {
 	}
 	ip_ranges := strings.Split(ranges, ",")
 	pScan := *pScanPtr
+	routine := *routinePtr
+	if routine {
+		debug = false
+	}
 
 	fmt.Println("3g-scan config\n-----------------------------")
 	fmt.Println("* IP ranges :")
@@ -65,14 +83,10 @@ func main() {
 			
 			log.Printf("\n\nScanning %v\n-----------------------------\n", ip)
 
-			up := ggg_network.Pinger(ip)
-		
-			if up {
-				ggg_network.HostnameDiscover(ip)
-				ggg_network.Maccer(ip)
-				if pScan {
-					ggg_network.PortScanner(ip)
-				}
+			if routine {
+				go RoutineMaster(ip, pScan)
+			} else {
+				RoutineMaster(ip, pScan)
 			}
 
 		}
