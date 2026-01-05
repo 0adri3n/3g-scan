@@ -31,6 +31,10 @@ func main() {
 	}
 
 	ranges := *rangesPtr
+	if ranges == "" {
+		fmt.Println("Please type in IP ranges to start, using the -ranges argument.")
+		return
+	}
 	ip_ranges := strings.Split(ranges, ",")
 	iface := *ifacePtr
 
@@ -46,8 +50,6 @@ func main() {
 	fmt.Println("\n-----------------------------")
 	fmt.Println("3g-scan started")
 	fmt.Println("-----------------------------")
-
-	// ggg_network.SelectInterface()
 
 
 	mapped_ranges := make(map[string][]string)
