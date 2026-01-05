@@ -12,8 +12,8 @@ func Pinger(ip string) bool {
         panic(err)
     }
 
-    pinger.Count = 3
-    pinger.Timeout = time.Second * 3
+    pinger.Count = 2
+    pinger.Timeout = time.Second * 2
     pinger.SetPrivileged(true)
 
     err = pinger.Run()
@@ -24,9 +24,18 @@ func Pinger(ip string) bool {
 
     stats := pinger.Statistics()
 
-    log.Println("Packets sent:", stats.PacketsSent)
-    log.Println("Packets received:", stats.PacketsRecv)
-    log.Println("Avg RTT:", stats.AvgRtt)
+    var status string
+
+    if stats.PacketsRecv == 0 {
+        status = "Down"
+    } else {
+        status = "Up"
+    }
+
+    log.Println("Packets sent :", stats.PacketsSent)
+    log.Println("Packets received :", stats.PacketsRecv)
+    log.Println("Avg RTT :", stats.AvgRtt)
+    log.Println("Status :", status)
 
     return true
 
