@@ -161,7 +161,7 @@ Logs are printed to `stderr` and include:
 
 * [X] Vendor lookup (OUI)
 * [ ] JSON / CSV output
-* [ ] Parallel scanning
+* [X] Parallel scanning (routines)
 * [X] Hostname resolution
 * [X] Service checking
 * [ ] Export scan results
