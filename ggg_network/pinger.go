@@ -29,6 +29,7 @@ func Pinger(ip string) bool {
 
     if stats.PacketsRecv == 0 {
         status = "Down"
+        log.Printf("%v not responding. Skipping... ", ip)
         return false
     } else {
         status = "Up"
