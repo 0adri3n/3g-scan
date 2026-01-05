@@ -164,8 +164,6 @@ Logs are printed to `stderr` and include:
 * [ ] Parallel scanning
 * [X] Hostname resolution
 * [X] Service checking
-* [ ] OS Guess
-* [ ] SNMP check
 * [ ] Export scan results
 
 ---

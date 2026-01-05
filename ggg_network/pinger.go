@@ -15,10 +15,11 @@ func Pinger(ip string) bool {
     pinger.Count = 2
     pinger.Timeout = time.Second * 2
     pinger.SetPrivileged(true)
+    pinger.Size = 32
 
     err = pinger.Run()
     if err != nil {
-        log.Printf("%v not responding. Skipping...", ip)
+        log.Printf("%v not responding. Skipping... ", ip)
         return false
     }
 
@@ -28,6 +29,7 @@ func Pinger(ip string) bool {
 
     if stats.PacketsRecv == 0 {
         status = "Down"
+        return false
     } else {
         status = "Up"
     }

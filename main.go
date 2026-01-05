@@ -15,7 +15,6 @@ func main() {
 	log.SetPrefix("3g-scan : ")
 
 	rangesPtr := flag.String("ranges", "", "IP ranges to scan (comma separated)")
-	ifacePtr := flag.String("iface", "", "Network interface to use (e.g. eth0 or Ethernet)")
 	pScanPtr := flag.Bool("p_scan", true, "Port scanning functionality (true/false)")
 	debugPtr := flag.Bool("debug", false, "Debug ability (true/false)")
 
@@ -36,7 +35,6 @@ func main() {
 		return
 	}
 	ip_ranges := strings.Split(ranges, ",")
-	iface := *ifacePtr
 	pScan := *pScanPtr
 
 	fmt.Println("3g-scan config\n-----------------------------")
@@ -44,7 +42,6 @@ func main() {
 	for _, ip_range := range ip_ranges {
 		fmt.Printf("- %v\n", ip_range)
 	}
-	fmt.Printf("\n* Interface :\n- %v\n", iface)
 	fmt.Printf("\n* Port scanning :\n- %v\n", debug)
 	fmt.Printf("\n* Debug :\n- %v\n", debug)
 
