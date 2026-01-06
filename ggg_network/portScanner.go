@@ -18,7 +18,7 @@ func contains(slice []int, element int) bool {
 }
 
 func HTTPFingerprint(ip string, port int) string {
-	client := http.Client{Timeout: 1 * time.Second}
+	client := http.Client{Timeout: 500 * time.Millisecond}
 	resp, err := client.Get("http://" + ip + ":" + strconv.Itoa(port))
 	if err != nil {
 		return ""
