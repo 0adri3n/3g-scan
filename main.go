@@ -205,7 +205,7 @@ func main() {
 
 
 	fmt.Println("\n-----------------------------")
-	fmt.Println("3g-scan started")
+	fmt.Println("3g-scan started.")
 	fmt.Println("-----------------------------")
 
 
