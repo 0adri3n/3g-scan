@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Installation - 3g-scan</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="background-overlay"></div>
+    
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <h1>3g-scan</h1>
+                <span class="subtitle">GoGoGadgeto-Scan</span>
+            </div>
+            <ul class="nav-menu" id="navMenu">
+                <!-- Translated navigation to English -->
+                <li><a href="index.html">Home</a></li>
+                <li><a href="installation.html" class="active">Installation</a></li>
+                <li><a href="documentation.html">Documentation</a></li>
+                <li><a href="https://github.com/0adri3n/3g-scan" target="_blank" class="github-link">GitHub</a></li>
+            </ul>
+            <button class="nav-toggle" id="navToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <main class="container doc-container">
+        <div class="doc-header">
+            <!-- Translated header to English -->
+            <h2>Installing 3g-scan</h2>
+            <p>Three installation methods to suit your needs</p>
+        </div>
+
+        <div class="doc-content">
+            <section class="doc-section">
+                <!-- Translated Method 1 to English -->
+                <div class="method-badge recommended">Recommended</div>
+                <h3>⚡ Method 1 — Automatic Installation Script</h3>
+                <p>The fastest and easiest method. The script automatically downloads the latest version and installs it on your system.</p>
+                
+                <div class="install-tabs">
+                    <button class="tab-btn active" onclick="showTab('linux')">Linux / macOS</button>
+                    <button class="tab-btn" onclick="showTab('windows')">Windows</button>
+                </div>
+
+                <div id="linux" class="tab-content active">
+                    <div class="code-block">
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        <pre><code>curl -fsSL https://0adri3n.github.io/3g-scan/docs/install.sh | bash</code></pre>
+                    </div>
+                    <p class="note">Verify installation with: <code class="inline-code">3g-scan -h</code></p>
+                </div>
+
+                <div id="windows" class="tab-content">
+                    <p class="warning-box">⚠️ Run PowerShell as Administrator</p>
+                    <div class="code-block">
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        <pre><code>iwr https://0adri3n.github.io/3g-scan/docs/install.ps1 -UseBasicParsing | iex</code></pre>
+                    </div>
+                    <p class="note">Verify installation with: <code class="inline-code">3g-scan -h</code></p>
+                </div>
+            </section>
+
+            <section class="doc-section">
+                <!-- Translated Method 2 to English -->
+                <h3>📦 Method 2 — Manual Binary Download</h3>
+                <p>Download the executable for your platform from the latest GitHub release.</p>
+                
+                <div class="download-box">
+                    <a href="https://github.com/0adri3n/3g-scan/releases/latest" target="_blank" class="btn btn-primary">
+                        📥 Download Latest Release
+                    </a>
+                </div>
+
+                <div class="install-steps">
+                    <h4>Linux / macOS</h4>
+                    <div class="code-block">
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        <pre><code>chmod +x 3g-scan
+sudo mv 3g-scan /usr/local/bin/</code></pre>
+                    </div>
+
+                    <h4>Windows</h4>
+                    <ol class="steps-list">
+                        <li>Download <code class="inline-code">3g-scan.exe</code></li>
+                        <li>Place it in a directory of your choice</li>
+                        <li>(Optional) Add the directory to your <code class="inline-code">PATH</code></li>
+                    </ol>
+                </div>
+            </section>
+
+            <section class="doc-section">
+                <!-- Translated Method 3 to English -->
+                <h3>🛠️ Method 3 — Build from Source</h3>
+                <p>Recommended if you want to modify the code, audit the implementation, or compile for a custom platform.</p>
+                
+                <div class="requirements-box">
+                    <h4>Prerequisites</h4>
+                    <ul>
+                        <li>Go 1.20+</li>
+                        <li>Git</li>
+                    </ul>
+                </div>
+
+                <h4>Build Steps</h4>
+                <div class="code-block">
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    <pre><code>git clone https://github.com/0adri3n/3g-scan.git
+cd 3g-scan
+go build -o 3g-scan</code></pre>
+                </div>
+
+                <p class="note">Run with: <code class="inline-code">sudo ./3g-scan -h</code></p>
+            </section>
+
+            <section class="doc-section permissions-section">
+                <!-- Translated permissions section to English -->
+                <h3>🔐 Required Permissions</h3>
+                <p class="warning-box">3g-scan must be run with elevated privileges:</p>
+                <div class="permissions-grid">
+                    <div class="permission-item">
+                        <strong>Linux / macOS</strong>
+                        <code class="inline-code">sudo 3g-scan</code>
+                    </div>
+                    <div class="permission-item">
+                        <strong>Windows</strong>
+                        <span>Terminal in Administrator mode</span>
+                    </div>
+                </div>
+                <p class="note">Required for ICMP requests and ARP table access</p>
+            </section>
+
+            <div class="next-steps">
+                <!-- Translated next steps to English -->
+                <h3>Next Steps</h3>
+                <p>Now that 3g-scan is installed, check out the full documentation to discover all features.</p>
+                <a href="documentation.html" class="btn btn-primary">View Documentation</a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 3g-scan - MIT License</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

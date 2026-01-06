@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3g-scan - Network Discovery Tool</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="background-overlay"></div>
+    
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <h1>3g-scan</h1>
+                <span class="subtitle">GoGoGadgeto-Scan</span>
+            </div>
+            <ul class="nav-menu" id="navMenu">
+                <!-- Translated navigation to English -->
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="installation.html">Installation</a></li>
+                <li><a href="documentation.html">Documentation</a></li>
+                <li><a href="https://github.com/0adri3n/3g-scan" target="_blank" class="github-link">GitHub</a></li>
+            </ul>
+            <button class="nav-toggle" id="navToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <main class="container">
+        <section class="hero">
+            <!-- Translated hero section to English -->
+            <h2 class="hero-title">Fast Native Network Discovery</h2>
+            <p class="hero-description">
+                A lightweight and efficient network scanning tool written in Go. Performant, predictable, and suitable for professional and personal environments.
+            </p>
+            <div class="hero-buttons">
+                <a href="installation.html" class="btn btn-primary">Get Started</a>
+                <a href="https://github.com/0adri3n/3g-scan" target="_blank" class="btn btn-secondary">View on GitHub</a>
+            </div>
+        </section>
+
+        <section class="features">
+            <!-- Translated features section to English -->
+            <h3 class="section-title">Core Philosophy</h3>
+            <div class="feature-highlight">
+                <p class="philosophy-quote">"No external scan modules. No wrappers. No overhead."</p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h4>Maximum Performance</h4>
+                    <p>Uses native system capabilities for optimal speed</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🧠</div>
+                    <h4>Full Control</h4>
+                    <p>Complete control over behavior without heavy dependencies</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔐</div>
+                    <h4>Minimal Attack Surface</h4>
+                    <p>Enhanced security through native approach</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📦</div>
+                    <h4>Compact Binary</h4>
+                    <p>Very small file size and portable</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="capabilities">
+            <!-- Translated capabilities section to English -->
+            <h3 class="section-title">Features</h3>
+            <div class="capabilities-list">
+                <div class="capability-item">
+                    <span class="check-icon">✓</span>
+                    <span>Scan multiple CIDR ranges</span>
+                </div>
+                <div class="capability-item">
+                    <span class="check-icon">✓</span>
+                    <span>Host availability detection</span>
+                </div>
+                <div class="capability-item">
+                    <span class="check-icon">✓</span>
+                    <span>Hostname resolution (reverse DNS)</span>
+                </div>
+                <div class="capability-item">
+                    <span class="check-icon">✓</span>
+                    <span>MAC address retrieval</span>
+                </div>
+                <div class="capability-item">
+                    <span class="check-icon">✓</span>
+                    <span>Hardware vendor identification</span>
+                </div>
+                <div class="capability-item">
+                    <span class="check-icon">✓</span>
+                    <span>Lightweight TCP port scanning</span>
+                </div>
+                <div class="capability-item">
+                    <span class="check-icon">✓</span>
+                    <span>Concurrent scanning with goroutines</span>
+                </div>
+                <div class="capability-item">
+                    <span class="check-icon">✓</span>
+                    <span>Export to CSV and YAML</span>
+                </div>
+                <div class="capability-item">
+                    <span class="check-icon">✓</span>
+                    <span>Cross-platform (Windows, Linux, macOS)</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="usage-preview">
+            <!-- Translated usage preview section to English -->
+            <h3 class="section-title">Usage Example</h3>
+            <div class="code-block">
+                <pre><code>sudo ./3g-scan -ranges 192.168.1.0/24,10.0.0.0/24 \
+  -p_scan true \
+  -routine true \
+  -csv results.csv \
+  -yaml results.yaml</code></pre>
+            </div>
+        </section>
+
+        <section class="cta-section">
+            <!-- Translated CTA section to English -->
+            <h3>Ready to Get Started?</h3>
+            <p>Install 3g-scan in seconds and start discovering your network</p>
+            <a href="installation.html" class="btn btn-primary btn-large">Installation Guide</a>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 3g-scan - MIT License</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

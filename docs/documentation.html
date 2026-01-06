@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation - 3g-scan</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="background-overlay"></div>
+    
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <h1>3g-scan</h1>
+                <span class="subtitle">GoGoGadgeto-Scan</span>
+            </div>
+            <ul class="nav-menu" id="navMenu">
+                <!-- Translated navigation to English -->
+                <li><a href="index.html">Home</a></li>
+                <li><a href="installation.html">Installation</a></li>
+                <li><a href="documentation.html" class="active">Documentation</a></li>
+                <li><a href="https://github.com/0adri3n/3g-scan" target="_blank" class="github-link">GitHub</a></li>
+            </ul>
+            <button class="nav-toggle" id="navToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <main class="container doc-container">
+        <div class="doc-header">
+            <!-- Translated header to English -->
+            <h2>Complete Documentation</h2>
+            <p>Detailed guide for using 3g-scan</p>
+        </div>
+
+        <div class="doc-content">
+            <section class="doc-section">
+                <!-- Translated basic usage section to English -->
+                <h3>▶️ Basic Usage</h3>
+                <div class="code-block">
+                    <pre><code>3g-scan -ranges &lt;CIDR[,CIDR,...]&gt; [options]</code></pre>
+                </div>
+
+                <h4>CLI Options</h4>
+                <div class="table-container">
+                    <table class="options-table">
+                        <thead>
+                            <tr>
+                                <th>Flag</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>-ranges</code></td>
+                                <td>IP ranges to scan (comma-separated CIDRs)</td>
+                            </tr>
+                            <tr>
+                                <td><code>-p_scan</code></td>
+                                <td>Enable or disable port scanning</td>
+                            </tr>
+                            <tr>
+                                <td><code>-routine</code></td>
+                                <td>Enable concurrent scanning (goroutines)</td>
+                            </tr>
+                            <tr>
+                                <td><code>-debug</code></td>
+                                <td>Enable debug logging</td>
+                            </tr>
+                            <tr>
+                                <td><code>-csv</code></td>
+                                <td>Export results to a CSV file</td>
+                            </tr>
+                            <tr>
+                                <td><code>-yaml</code></td>
+                                <td>Export results to a YAML file</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section class="doc-section">
+                <!-- Translated usage examples section to English -->
+                <h3>📚 Usage Examples</h3>
+                
+                <div class="example-card">
+                    <h4>Basic Scan</h4>
+                    <p>Scan a single network range</p>
+                    <div class="code-block">
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        <pre><code>sudo ./3g-scan -ranges 192.168.1.0/24</code></pre>
+                    </div>
+                </div>
+
+                <div class="example-card">
+                    <h4>Full Scan with Exports</h4>
+                    <p>Scan multiple ranges with port scanning and exports</p>
+                    <div class="code-block">
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        <pre><code>sudo ./3g-scan \
+  -ranges 192.168.1.0/24,10.0.0.0/24 \
+  -p_scan true \
+  -routine true \
+  -csv results.csv \
+  -yaml results.yaml</code></pre>
+                    </div>
+                </div>
+
+                <div class="example-card">
+                    <h4>Windows (Administrator)</h4>
+                    <p>Usage on Windows PowerShell</p>
+                    <div class="code-block">
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        <pre><code>.\3g-scan.exe -ranges 192.168.1.0/24</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="doc-section">
+                <!-- Translated how it works section to English -->
+                <h3>🧠 How 3g-scan Works</h3>
+                <div class="workflow-steps">
+                    <div class="workflow-step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h4>CIDR Expansion</h4>
+                            <p>Convert CIDR ranges into individual IP addresses</p>
+                        </div>
+                    </div>
+                    <div class="workflow-step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h4>ICMP Ping</h4>
+                            <p>Test availability of each host with native ICMP</p>
+                        </div>
+                    </div>
+                    <div class="workflow-step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h4>Information Gathering</h4>
+                            <p>For active hosts: DNS resolution, MAC, vendor, ports</p>
+                        </div>
+                    </div>
+                    <div class="workflow-step">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <h4>Aggregation</h4>
+                            <p>Compile results into a unified structure</p>
+                        </div>
+                    </div>
+                    <div class="workflow-step">
+                        <div class="step-number">5</div>
+                        <div class="step-content">
+                            <h4>Export</h4>
+                            <p>Generate CSV and/or YAML files if requested</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="doc-section">
+                <!-- Translated multi-platform support section to English -->
+                <h3>🖥️ Multi-Platform Support</h3>
+                <div class="table-container">
+                    <table class="platform-table">
+                        <thead>
+                            <tr>
+                                <th>OS</th>
+                                <th>Ping</th>
+                                <th>MAC</th>
+                                <th>Hostname</th>
+                                <th>Ports</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Windows</strong></td>
+                                <td>✅</td>
+                                <td>ARP cache</td>
+                                <td>✅</td>
+                                <td>✅</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Linux</strong></td>
+                                <td>✅</td>
+                                <td>Native ARP</td>
+                                <td>✅</td>
+                                <td>✅</td>
+                            </tr>
+                            <tr>
+                                <td><strong>macOS</strong></td>
+                                <td>✅</td>
+                                <td>Native ARP</td>
+                                <td>✅</td>
+                                <td>✅</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section class="doc-section">
+                <!-- Translated use cases section to English -->
+                <h3>🏢 Use Cases</h3>
+                <div class="use-cases">
+                    <div class="use-case-category">
+                        <h4>🏢 Enterprise Networks</h4>
+                        <ul>
+                            <li>Asset discovery</li>
+                            <li>Shadow IT detection</li>
+                            <li>Network audits</li>
+                            <li>Inventory generation</li>
+                            <li>Segmentation validation</li>
+                        </ul>
+                    </div>
+                    <div class="use-case-category">
+                        <h4>🏠 Personal / Lab Usage</h4>
+                        <ul>
+                            <li>Home network discovery</li>
+                            <li>Device identification</li>
+                            <li>IoT visibility</li>
+                            <li>Learning network concepts</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section class="doc-section">
+                <!-- Translated limitations section to English -->
+                <h3>⚠️ Limitations</h3>
+                <div class="limitations-list">
+                    <div class="limitation-item">
+                        <span class="limit-icon">•</span>
+                        <p>MAC addresses are only available on the <strong>local network</strong></p>
+                    </div>
+                    <div class="limitation-item">
+                        <span class="limit-icon">•</span>
+                        <p>ARP does not work across routed networks or VLANs</p>
+                    </div>
+                    <div class="limitation-item">
+                        <span class="limit-icon">•</span>
+                        <p>Firewalls may block ICMP or TCP probes</p>
+                    </div>
+                    <div class="limitation-item">
+                        <span class="limit-icon">•</span>
+                        <p>OS detection is <strong>heuristic</strong>, not guaranteed</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="doc-section">
+                <!-- Translated project structure section to English -->
+                <h3>📦 Project Structure</h3>
+                <div class="code-block">
+                    <pre><code>3g-scan/
+├── main.go
+├── ggg_network/
+│   ├── cidrLister.go
+│   ├── pinger.go
+│   ├── hostnamer.go
+│   ├── maccer.go
+│   ├── portScanner.go
+│   └── resources/
+│       └── ieee-oui.txt
+└── README.md</code></pre>
+                </div>
+            </section>
+
+            <section class="doc-section">
+                <!-- Translated roadmap section to English -->
+                <h3>🛣️ Roadmap</h3>
+                <ul class="roadmap-list">
+                    <li>TUI interface</li>
+                    <li>JSON export</li>
+                    <li>Enhanced OS fingerprinting</li>
+                    <li>Custom port lists</li>
+                    <li>Vendor database optimization</li>
+                    <li>Profiling and scan statistics</li>
+                </ul>
+            </section>
+
+            <div class="contribute-section">
+                <!-- Translated contribute section to English -->
+                <h3>⭐ Contribute</h3>
+                <p>Contributions are welcome! Feel free to open issues or submit pull requests.</p>
+                <a href="https://github.com/0adri3n/3g-scan" target="_blank" class="btn btn-primary">Contribute on GitHub</a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 3g-scan - MIT License</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -95,25 +95,107 @@ Its **non-intrusive and native approach** makes it safe to run in production env
 
 ## 🔧 Installation
 
-### Requirements
+3g-scan can be installed in **three different ways**, depending on your needs and environment.
+
+All methods require **administrator / root privileges** at runtime (ICMP & ARP access).
+
+---
+
+### ⚡ Method 1 — Automatic Installation Script (Recommended)
+
+This is the **fastest and easiest** way to install 3g-scan.  
+The script automatically downloads the **latest release** and installs it on your system.
+
+#### Linux / macOS
+
+```bash
+curl -fsSL https://0adri3n.github.io/3g-scan/docs/install.sh | bash
+````
+
+#### Windows (PowerShell — Run as Administrator)
+
+```powershell
+iwr https://0adri3n.github.io/3g-scan/docs/install.ps1 -UseBasicParsing | iex
+```
+
+After installation, you can verify it with:
+
+```bash
+3g-scan -h
+```
+
+---
+
+### 📦 Method 2 — Download Prebuilt Binary (GitHub Releases)
+
+You can manually download the executable matching your platform from the **latest GitHub release**.
+
+👉 [https://github.com/0adri3n/3g-scan/releases/latest](https://github.com/0adri3n/3g-scan/releases/latest)
+
+#### Linux / macOS
+
+```bash
+chmod +x 3g-scan
+sudo mv 3g-scan /usr/local/bin/
+```
+
+#### Windows
+
+1. Download `3g-scan.exe`
+2. Place it in a directory of your choice
+3. (Optional) Add the directory to your `PATH`
+
+Verify:
+
+```bash
+3g-scan -h
+```
+
+---
+
+### 🛠️ Method 3 — Build from Source
+
+Recommended if you want to:
+
+* Modify the code
+* Audit the implementation
+* Build for a custom platform
+
+#### Requirements
 
 * Go **1.20+**
-* Administrator / root privileges (required for ICMP & ARP)
+* Git
 
-### Clone
+#### Build steps
 
 ```bash
 git clone https://github.com/0adri3n/3g-scan.git
 cd 3g-scan
-```
-
-### Build
-
-```bash
 go build -o 3g-scan
 ```
 
+Run:
+
+```bash
+sudo ./3g-scan -h
+```
+
 ---
+
+## 🔐 Permissions
+
+3g-scan must be run with **elevated privileges**:
+
+* Linux / macOS: `sudo`
+* Windows: Run terminal as **Administrator**
+
+This is required for:
+
+* ICMP echo requests
+* ARP table access
+
+---
+
 
 ## ▶️ Usage
 
@@ -171,36 +253,12 @@ sudo ./3g-scan \
 
 ---
 
-## 🔐 Permissions
-
-3g-scan **must be run with elevated privileges**:
-
-* Linux / macOS: `sudo`
-* Windows: Run as **Administrator**
-
-This is required for:
-
-* ICMP echo requests
-* ARP table access
-
----
-
 ## ⚠️ Limitations
 
 * MAC addresses are only available on the **local network**
 * ARP does not work across routed networks or VLANs
 * Firewalls may block ICMP or TCP probes
 * OS detection is **heuristic-based**, not guaranteed
-
----
-
-## 📊 Benchmark
-
-> *This section will be completed with real-world performance results.*
-
-```text
-TBD
-```
 
 ---
 
@@ -218,13 +276,6 @@ TBD
 ## 📜 License
 
 MIT License
-
----
-
-## 👤 Author
-
-**0adri3n**
-GitHub: [https://github.com/0adri3n](https://github.com/0adri3n)
 
 ---
 
