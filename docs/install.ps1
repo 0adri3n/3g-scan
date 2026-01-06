@@ -2,7 +2,7 @@ $repo = "0adri3n/3g-scan"
 $release = Invoke-RestMethod "https://api.github.com/repos/$repo/releases/latest"
 $asset = $release.assets | Where-Object { $_.name -match "3g-scan.exe" } | Select-Object -First 1
 
-$dest = "\3g-scan"
+$dest = "$env:ProgramFiles\3g-scan"
 New-Item -ItemType Directory -Force -Path $dest | Out-Null
 
 Invoke-WebRequest $asset.browser_download_url -OutFile "$dest\3g-scan.exe"
