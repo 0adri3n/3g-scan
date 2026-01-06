@@ -9,7 +9,9 @@ import (
 	"strings"
 	"sync"
 	"bytes"
+	"bufio"
     "encoding/csv"
+	"path/filepath"
 	"gopkg.in/yaml.v3"
 	"github.com/0adri3n/3g-scan/ggg_network"
 )
@@ -28,7 +30,53 @@ type Machine struct {
 	Ports      []Port   `yaml:"ports,omitempty"`
 }
 
-func RoutineMaster(ip string, pScan bool, resultsCsvPtr *[][]string, resultsYamlPtr *[]Machine, csvPath string, yamlPath string) {
+
+func check(e error) {
+    if e != nil {
+        panic(e)
+    }
+}
+
+var ouiDB map[string]string
+var ouiOnce sync.Once
+
+func getOUIDatabase() map[string]string {
+	ouiOnce.Do(func() {
+		ouiDB = make(map[string]string)
+		w_path, err := os.Getwd()
+		if err != nil {
+			log.Println(err)
+			return
+		}
+		path := filepath.Join(w_path, "/ggg_network/resources/ieee-oui.txt")
+		dat, err := os.ReadFile(path)
+		if err != nil {
+			log.Println("Error reading OUI database:", err)
+			return
+		}
+
+		scanner := bufio.NewScanner(bytes.NewReader(dat))
+		for scanner.Scan() {
+			line := scanner.Text()
+			if len(line) == 0 || strings.HasPrefix(line, "#") {
+				continue
+			}
+			parts := strings.Fields(line)
+			if len(parts) >= 2 {
+				prefix := strings.ToUpper(parts[0])
+				vendor := strings.Join(parts[1:], " ")
+				ouiDB[prefix] = vendor
+			}
+		}
+
+		if err := scanner.Err(); err != nil {
+			log.Println("Error scanning OUI database:", err)
+		}
+	})
+	return ouiDB
+}
+
+func RoutineMaster(ip string, pScan bool, resultsCsvPtr *[][]string, resultsYamlPtr *[]Machine, csvPath string, yamlPath string, ouiDB map[string]string) {
 
 	up := ggg_network.Pinger(ip)
 
@@ -37,7 +85,7 @@ func RoutineMaster(ip string, pScan bool, resultsCsvPtr *[][]string, resultsYaml
 	if up {
 		hostnames := ggg_network.HostnameDiscover(ip)
 		hostnamesStr = strings.Join(hostnames, "\n")
-		m, v := ggg_network.Maccer(ip)
+		m, v := ggg_network.Maccer(ip, ouiDB)
 		macStr = m
 		vendorStr = v
 		if pScan {
@@ -180,6 +228,7 @@ func main() {
 
 	resultsCsvPtr := &resultsCsv
 	resultsYamlPtr := &resultsYaml
+	db := getOUIDatabase()
 
 	for _, ip_range := range ip_ranges {
 		ips := mapped_ranges[ip_range]
@@ -191,10 +240,10 @@ func main() {
 				wg.Add(1)
 				go func(ip string) {
 					defer wg.Done()
-					RoutineMaster(ip, pScan, resultsCsvPtr, resultsYamlPtr, csvPath, yamlPath)
+					RoutineMaster(ip, pScan, resultsCsvPtr, resultsYamlPtr, csvPath, yamlPath, db)
 				}(ip)
 			} else {
-				RoutineMaster(ip, pScan, resultsCsvPtr, resultsYamlPtr, csvPath, yamlPath)
+				RoutineMaster(ip, pScan, resultsCsvPtr, resultsYamlPtr, csvPath, yamlPath, db)
 			}
 
 
