@@ -109,13 +109,13 @@ The script automatically downloads the **latest release** and installs it on you
 #### Linux / macOS
 
 ```bash
-curl -fsSL https://0adri3n.github.io/3g-scan/docs/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/0adri3n/3g-scan/refs/heads/master/docs/install.sh | bash
 ````
 
 #### Windows (PowerShell — Run as Administrator)
 
 ```powershell
-iwr https://0adri3n.github.io/3g-scan/docs/install.ps1 -UseBasicParsing | iex
+iwr https://raw.githubusercontent.com/0adri3n/3g-scan/refs/heads/master/docs/install.ps1 -UseBasicParsing | iex
 ```
 
 After installation, you can verify it with:
