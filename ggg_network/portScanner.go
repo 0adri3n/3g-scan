@@ -102,7 +102,7 @@ func PortScanner(ip string) map[int]string {
 		conn, err := net.DialTimeout(
 			"tcp",
 			fmt.Sprintf("%s:%d", ip, port),
-			250*time.Millisecond,
+			100*time.Millisecond,
 		)
 		if err == nil {
 			conn.Close()

@@ -10,9 +10,9 @@ func Pinger(ip string) bool {
     var cmd *exec.Cmd
 
     if runtime.GOOS == "windows" {
-        cmd = exec.Command("ping", "-n", "2", "-w", "2000", ip)
+        cmd = exec.Command("ping", "-n", "2", "-w", "1000", ip)
     } else {
-        cmd = exec.Command("ping", "-c", "2", "-W", "2", ip)
+        cmd = exec.Command("ping", "-c", "2", "-W", "1", ip)
     }
 
     output, err := cmd.Output()
