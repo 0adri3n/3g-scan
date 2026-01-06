@@ -2,6 +2,7 @@ curl -fsSL https://api.github.com/repos/0adri3n/3g-scan/releases/latest \
 | grep browser_download_url \
 | grep linux \
 | cut -d '"' -f 4 \
+	| perl -0777 -ne 'print $1 if /"name"\s*:\s*"3g-scan".*?"browser_download_url"\s*:\s*"([^"]+)"/s' \
 | wget -qi - \
 && chmod +x 3g-scan \
 && sudo mv 3g-scan /usr/local/bin/3g-scan \
