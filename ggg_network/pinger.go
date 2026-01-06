@@ -19,8 +19,6 @@ func Pinger(ip string) bool {
     output, err := cmd.Output()
     outputStr := string(output)
 
-    log.Println(outputStr)
-
     if err != nil {
         if !isPacketReceived(outputStr, runtime.GOOS) {
             log.Printf("%v not responding. Skipping...", ip)
