@@ -17,7 +17,9 @@ if ($envPath -notlike "*$dest*") {
 }
 
 Write-Host ""
-Write-Host "🚀 Welcome to 3g-scan (GoGoGadgeto-Scan)"
+Write-Host "Welcome to 3g-scan (GoGoGadgeto-Scan)"
+Write-Host ""
+Write-Host "3g-scan is now installed at $dest"
 Write-Host ""
 Write-Host "Usage:"
 Write-Host "  3g-scan -ranges <CIDR[,CIDR,...]> [options]"
