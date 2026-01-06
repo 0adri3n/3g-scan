@@ -151,7 +151,7 @@ func main() {
 	for _, ip_range := range ip_ranges {
 		fmt.Printf("- %v\n", ip_range)
 	}
-	fmt.Printf("\n* Port scanning :\n- %v\n", debug)
+	fmt.Printf("\n* Port scanning :\n- %v\n", p_scan)
 	fmt.Printf("\n* Routine :\n- %v\n", routine)
 	fmt.Printf("\n* Debug :\n- %v\n", debug)
 

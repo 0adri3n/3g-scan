@@ -1,34 +1,77 @@
 # 3g-scan (GoGoGadgeto-Scan)
 
-3g-scan (short for **GoGoGadgeto-Scan**) is a lightweight **network scanner written in Go**.  
-It scans one or multiple IP ranges, checks host availability using ICMP, and retrieves **MAC addresses** on the local network with OS-specific implementations.
+**3g-scan** (short for **GoGoGadgeto-Scan**) is a fast, lightweight, and efficient **network discovery and scanning tool written in Go**.
 
-The tool is designed to be **simple, fast, and cross-platform**, with native support for **Windows, Linux, and macOS**.
+It is designed to perform **native network scans only**, relying exclusively on **built-in system capabilities** (ARP, ICMP, TCP, DNS) instead of heavy third-party scanning libraries.  
+This approach makes 3g-scan **extremely fast, predictable, and suitable for both enterprise and personal environments**.
+
+---
+
+## 🚀 Key Philosophy
+
+> **No external scanning modules. No wrappers. No overhead.**
+
+3g-scan uses:
+- Native **ICMP ping**
+- Native **ARP table / neighbor discovery**
+- Native **TCP port scanning**
+- Native **DNS reverse lookup**
+
+This guarantees:
+- ⚡ Maximum performance
+- 🧠 Full control over behavior
+- 🔐 Minimal attack surface
+- 📦 Very small binary size
 
 ---
 
 ## ✨ Features
 
 - Scan one or multiple **CIDR IP ranges**
-- **Ping** hosts to check availability
-- Retrieve **MAC addresses** for reachable hosts
-- OS-specific implementations:
-  - **Windows**: ARP table lookup
-  - **Linux / macOS**: Native ARP requests
-- Optional **debug logging**
-- Lightweight and dependency-minimal
-- Written in pure **Golang**
+- Detect host **availability (Up / Down)**
+- Resolve **hostnames (reverse DNS)**
+- Retrieve **MAC addresses**
+- Identify **hardware vendors**
+- Lightweight **TCP port scanning**
+- Optional **concurrent scanning (goroutines)**
+- Export results to **CSV** and **YAML**
+- Configurable via CLI flags
+- Cross-platform: **Windows, Linux, macOS**
 
 ---
 
-## 🧠 How It Works
+## 🧠 How 3g-scan Works
 
-1. Parse IP ranges from CLI arguments
-2. Expand CIDR ranges into individual IPs
-3. Ping each IP to check if the host is alive
-4. If reachable:
-   - Retrieve the MAC address using the appropriate OS method
-5. Display scan progress and results
+1. Expand CIDR ranges into individual IP addresses
+2. Ping each host using native ICMP
+3. If the host is reachable:
+   - Resolve hostname(s)
+   - Retrieve MAC address
+   - Identify vendor from MAC
+   - Scan common TCP ports
+4. Aggregate results
+5. Export to CSV and/or YAML if requested
+
+---
+
+## 🏢 Enterprise & Personal Usage
+
+3g-scan is **equally suitable for**:
+
+### 🏢 Enterprise Networks
+- Asset discovery
+- Shadow IT detection
+- Network audits
+- Inventory generation
+- Segmentation validation
+
+### 🏠 Personal / Lab Usage
+- Home network discovery
+- Device identification
+- IoT visibility
+- Learning networking concepts
+
+Its **non-intrusive and native approach** makes it safe to run in production environments.
 
 ---
 
@@ -38,24 +81,26 @@ The tool is designed to be **simple, fast, and cross-platform**, with native sup
 3g-scan/
 ├── main.go
 ├── ggg_network/
-│   ├── cidr.go        # CIDR expansion
-│   ├── ping.go        # ICMP ping
-│   ├── mac_linux.go  # Linux/macOS ARP resolution
-│   ├── mac_windows.go# Windows ARP table parsing
-│   └── ...
+│   ├── cidrLister.go
+│   ├── pinger.go
+│   ├── hostnamer.go
+│   ├── maccer.go
+│   ├── portScanner.go
+│   └── resources/
+|       └── ieee-oui.txt
 └── README.md
 ````
 
 ---
 
-## 🚀 Installation
+## 🔧 Installation
 
 ### Requirements
 
 * Go **1.20+**
 * Administrator / root privileges (required for ICMP & ARP)
 
-### Clone the repository
+### Clone
 
 ```bash
 git clone https://github.com/0adri3n/3g-scan.git
@@ -73,98 +118,100 @@ go build -o 3g-scan
 ## ▶️ Usage
 
 ```bash
-3g-scan -ranges <CIDR[,CIDR,...]> -iface <interface> [options]
+3g-scan -ranges <CIDR[,CIDR,...]> [options]
 ```
 
-### Arguments
+### CLI Options
 
-| Flag      | Description                              |
-| --------- | ---------------------------------------- |
-| `-ranges` | CIDR IP ranges to scan (comma separated) |
-| `-iface`  | Network interface to use (Linux/macOS)   |
-| `-debug`  | Enable debug logs (`true` / `false`)     |
+| Flag       | Description                              |
+| ---------- | ---------------------------------------- |
+| `-ranges`  | IP ranges to scan (comma separated CIDR) |
+| `-p_scan`  | Enable or disable port scanning          |
+| `-routine` | Enable concurrent scanning (goroutines)  |
+| `-debug`   | Enable debug logs                        |
+| `-csv`     | Output results to a CSV file             |
+| `-yaml`    | Output results to a YAML file            |
 
 ---
 
 ### Examples
 
-#### Linux / macOS
+#### Basic scan
+
+```bash
+sudo ./3g-scan -ranges 192.168.1.0/24
+```
+
+#### Scan with port scanning and exports
 
 ```bash
 sudo ./3g-scan \
   -ranges 192.168.1.0/24,10.0.0.0/24 \
-  -iface eth0 \
-  -debug true
+  -p_scan true \
+  -routine true \
+  -csv results.csv \
+  -yaml results.yaml
 ```
 
 #### Windows (Administrator)
 
 ```powershell
-.\3g-scan.exe -ranges 192.168.1.0/24 -debug true
+.\3g-scan.exe -ranges 192.168.1.0/24
 ```
-
-> ⚠️ On Windows, MAC addresses are resolved using the system ARP table.
-> Hosts must be reachable (pinged) to appear in the ARP cache.
 
 ---
 
 ## 🖥️ Platform Support
 
-| OS      | Ping | MAC Address |
-| ------- | ---- | ----------- |
-| Windows | ✅    | ARP table   |
-| Linux   | ✅    | Native ARP  |
-| macOS   | ✅    | Native ARP  |
+| OS      | Ping | MAC        | Hostname | Ports |
+| ------- | ---- | ---------- | -------- | ----- |
+| Windows | ✅    | ARP cache  | ✅        | ✅     |
+| Linux   | ✅    | Native ARP | ✅        | ✅     |
+| macOS   | ✅    | Native ARP | ✅        | ✅     |
 
 ---
 
 ## 🔐 Permissions
 
-This tool **must be run with elevated privileges**:
+3g-scan **must be run with elevated privileges**:
 
 * Linux / macOS: `sudo`
-* Windows: Run terminal as **Administrator**
+* Windows: Run as **Administrator**
 
-Without privileges:
+This is required for:
 
-* ICMP ping may fail
-* ARP resolution may not work
-
----
-
-## 🧪 Debug Mode
-
-Enable debug logging with:
-
-```bash
--debug true
-```
-
-Logs are printed to `stderr` and include:
-
-* Scan progress
-* Host availability
-* Internal scan details
+* ICMP echo requests
+* ARP table access
 
 ---
 
 ## ⚠️ Limitations
 
-* MAC addresses can only be retrieved on the **local network**
-* ARP does not work across VLANs or routed networks
-* Windows does not support raw ARP packets natively
-* Firewalls may block ICMP
+* MAC addresses are only available on the **local network**
+* ARP does not work across routed networks or VLANs
+* Firewalls may block ICMP or TCP probes
+* OS detection is **heuristic-based**, not guaranteed
+
+---
+
+## 📊 Benchmark
+
+> *This section will be completed with real-world performance results.*
+
+```text
+TBD
+```
 
 ---
 
 ## 🛣️ Roadmap
 
-* [X] Vendor lookup (OUI)
-* [ ] JSON / CSV output
-* [X] Parallel scanning (routines)
-* [X] Hostname resolution
-* [X] Service checking
-* [ ] Export scan results
+* [ ] TUI interface
+* [ ] JSON export
+* [ ] OS fingerprint improvements
+* [ ] Custom port lists
+* [ ] Vendor database optimization
+* [ ] Scan profiling / statistics
 
 ---
 
@@ -183,5 +230,5 @@ GitHub: [https://github.com/0adri3n](https://github.com/0adri3n)
 
 ## ⭐ Contributing
 
-Pull requests are welcome!
-If you find a bug or have an idea, feel free to open an issue.
+Contributions are welcome!
+Feel free to open issues or submit pull requests.
