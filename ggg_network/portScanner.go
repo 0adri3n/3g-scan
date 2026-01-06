@@ -18,19 +18,28 @@ func contains(slice []int, element int) bool {
     return false
 }
 
-func HTTPFingerprint(ip string, port int) {
+func HTTPFingerprint(ip string, port int) string {
 	client := http.Client{Timeout: 1 * time.Second}
 	resp, err := client.Get("http://" + ip + ":" + strconv.Itoa(port))
 	if err != nil {
-		return
+		return ""
 	}
 	defer resp.Body.Close()
 
-	log.Println("Server:", resp.Header.Get("Server"))
+    var webserv string
+    if resp.Header.Get("Server") != "" {
+        webserv = resp.Header.Get("Server")
+    } else {
+        webserv = "Unknown"
+    }
+
+    answ := "Server: " + webserv
+	log.Println(answ)
+    return answ
 }
 
 
-func PortScanner(ip string) {
+func PortScanner(ip string) map[int]string {
 	
     var commonPorts = []int{
         // Réseau & Accès distant
@@ -88,6 +97,8 @@ func PortScanner(ip string) {
         9000,  // HTTP alt
 	}
 
+    results := make(map[int]string)
+
 	for _, port := range commonPorts {
 
 		conn, err := net.DialTimeout(
@@ -99,10 +110,15 @@ func PortScanner(ip string) {
 			log.Printf("Port %d: open\n", port)
 			conn.Close()
 			if contains(webPorts, port) {
-				HTTPFingerprint(ip, port)
-			}
+				fingerprint := HTTPFingerprint(ip, port)
+                results[port] = fingerprint
+			} else {
+                results[port] = ""
+            }
 		}
 
 	}
+
+    return results
 
 }

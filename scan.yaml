@@ -1,0 +1,15 @@
+ip: 192.168.0.19
+status: Up
+hostnames: [pi.hole.]
+macaddress: a0-d3-c1-0b-df-45
+vendor: Hewlett Packard
+ports:
+    - port: "22"
+    - port: "80"
+      server: Unknown
+    - port: "443"
+      server: Apache/2.4.58 (Ubuntu)
+    - port: "8080"
+      server: Apache/2.4.58 (Ubuntu)
+    - port: "53"
+    - port: "445"

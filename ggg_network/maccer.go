@@ -69,12 +69,12 @@ func MacVendor(mac string) string {
 }
 
 
-func Maccer(ip string) {
+func Maccer(ip string) (string, string) {
 	cmd := exec.Command("arp", "-a")
 	out, err := cmd.Output()
 	if err != nil {
 		log.Println(err)
-		return
+		return "", ""
 	}
 
 	var re *regexp.Regexp
@@ -92,10 +92,11 @@ func Maccer(ip string) {
 		if m[1] == ip {
 			log.Printf("MAC Address : %v\n", m[2])
 			log.Println("Vendor :", MacVendor(m[2]))
-			return
+			return m[2], MacVendor(m[2])
 		}
 	}
 
 	log.Println("MAC not found\n")
+	return "MAC not found", "Vendor not found"
 
 }
