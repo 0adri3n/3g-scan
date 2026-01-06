@@ -9,6 +9,7 @@
 *.dylib
 3g-scan
 scan.csv
+scan.yaml
 
 # Test binary, built with `go test -c`
 *.test
