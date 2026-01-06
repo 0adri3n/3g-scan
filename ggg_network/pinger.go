@@ -1,7 +1,6 @@
 package ggg_network
 
 import (
-    "log"
     "os/exec"
     "runtime"
     "strings"
@@ -21,17 +20,14 @@ func Pinger(ip string) bool {
 
     if err != nil {
         if !isPacketReceived(outputStr, runtime.GOOS) {
-            log.Printf("%v not responding. Skipping...", ip)
             return false
         }
     }
 
     if !isPacketReceived(outputStr, runtime.GOOS) {
-        log.Printf("%v not responding. Skipping...", ip)
         return false
     }
 
-    log.Printf("Status: %v is Up", ip)
     return true
 }
 

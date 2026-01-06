@@ -63,7 +63,14 @@ func RoutineMaster(ip string, pScan bool, resultsCsvPtr *[][]string, resultsYaml
 		status = "Down"
 	}
 
-
+	var summaryBuffer bytes.Buffer
+	summaryBuffer.WriteString(fmt.Sprintf("\n\nScanning %v\n-----------------------------\n", ip))
+	summaryBuffer.WriteString(fmt.Sprintf("Status: %v\n", status))
+	summaryBuffer.WriteString(fmt.Sprintf("Hostname(s): %v\n", hostnamesStr))
+	summaryBuffer.WriteString(fmt.Sprintf("MAC Address: %v\n", macStr))
+	summaryBuffer.WriteString(fmt.Sprintf("Vendor: %v\n", vendorStr))
+	summaryBuffer.WriteString(fmt.Sprintf("Ports: \n%v", portsStr))
+	log.Println(summaryBuffer.String())
 
 	if csvPath != "" {
 		*resultsCsvPtr = append(*resultsCsvPtr, []string{ip, status, hostnamesStr, macStr, vendorStr, portsStr})
@@ -112,8 +119,8 @@ func main() {
 
 	rangesPtr := flag.String("ranges", "", "IP ranges to scan (comma separated)")
 	pScanPtr := flag.Bool("p_scan", true, "Port scanning functionality (true/false default true)")
-	routinePtr := flag.Bool("routine", true, "Define routines a.k.a threads (true/false default true). If routine is enable, debug will automatically become false.")
-	debugPtr := flag.Bool("debug", false, "Debug ability (true/false default false)")
+	routinePtr := flag.Bool("routine", true, "Define routines a.k.a threads (true/false default true).")
+	debugPtr := flag.Bool("debug", true, "Debug ability (true/false default true)")
 	csvPtr := flag.String("csv", "", "CSV output path. If not defined, 3g-scan will not write any CSV file.")
 	yamlPtr := flag.String("yaml", "", "YAML output path. If not defined, 3g-scan will not write any yaml file.")
 
@@ -121,9 +128,6 @@ func main() {
 
 	debug := *debugPtr
 	routine := *routinePtr
-	if routine {
-		debug = false
-	}
 	if debug {
 		log.SetOutput(os.Stderr)
 		log.SetFlags(log.LstdFlags)
@@ -182,8 +186,6 @@ func main() {
 
 		for _, ip := range ips {
 			
-			log.Printf("\n\nScanning %v\n-----------------------------\n", ip)
-
 			if routine {
 
 				wg.Add(1)
@@ -240,14 +242,12 @@ func main() {
 		}
 	}
 	if yamlPath != "" {
-		for _, machine := range resultsYaml {
-			out, err := yaml.Marshal(machine)
-			if err != nil {
-				log.Fatal(err)
-			}
-			if err := os.WriteFile(yamlPath, out, 0666); err != nil {
-				panic(err)
-			}
+		out, err := yaml.Marshal(resultsYaml)
+		if err != nil {
+			log.Fatal(err)
+		}
+		if err := os.WriteFile(yamlPath, out, 0666); err != nil {
+			panic(err)
 		}
 	}
 

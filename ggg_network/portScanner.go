@@ -1,7 +1,6 @@
 package ggg_network
 
 import (
-	"log"
 	"net"
 	"time"
 	"fmt"
@@ -34,7 +33,6 @@ func HTTPFingerprint(ip string, port int) string {
     }
 
     answ := "Server: " + webserv
-	log.Println(answ)
     return answ
 }
 
@@ -107,7 +105,6 @@ func PortScanner(ip string) map[int]string {
 			250*time.Millisecond,
 		)
 		if err == nil {
-			log.Printf("Port %d: open\n", port)
 			conn.Close()
 			if contains(webPorts, port) {
 				fingerprint := HTTPFingerprint(ip, port)

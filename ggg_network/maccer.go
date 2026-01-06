@@ -90,13 +90,11 @@ func Maccer(ip string) (string, string) {
 
 	for _, m := range matches {
 		if m[1] == ip {
-			log.Printf("MAC Address : %v\n", m[2])
-			log.Println("Vendor :", MacVendor(m[2]))
+
 			return m[2], MacVendor(m[2])
 		}
 	}
 
-	log.Println("MAC not found\n")
 	return "MAC not found", "Vendor not found"
 
 }
